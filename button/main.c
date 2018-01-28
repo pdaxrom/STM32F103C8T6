@@ -49,29 +49,30 @@ int main(void)
   /* NVIC Configuration */
   NVIC_Configuration();
 
-  /* Enable GPIOA clock */
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
-  
-  /* Configure PA.0-2 as Output push-pull */
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2;
+  /* Enable GPIOC clock */
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
+
+  /* Configure PC.4 as Output push-pull */
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_13;
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
-  GPIO_Init(GPIOA, &GPIO_InitStructure);
+  GPIO_Init(GPIOC, &GPIO_InitStructure);
+
+  /* Configure PB.0 as input floating (button has builtin pull up resistor) */
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
+  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_2MHz;
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN_FLOATING;
+  GPIO_Init(GPIOB, &GPIO_InitStructure);
 
   while (1)
   {
-    u16 rgb_pin[] = { GPIO_Pin_0, GPIO_Pin_1, GPIO_Pin_2 };
-    int i;
-    for (i = 0; i < 3; i++) {
-	/* Turn on led */
-	GPIO_SetBits(GPIOA, rgb_pin[i]);
-	/* Insert delay */
-	Delay(0x5FFFFF);
-
-	/* Turn off led */
-	GPIO_ResetBits(GPIOA, rgb_pin[i]);
-	/* Insert delay */
-	//Delay(0xAFFFFF);
+    if (GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_0)) {
+	/* Turn on led connected to PC.4 pin */
+	GPIO_SetBits(GPIOC, GPIO_Pin_13);
+    } else {
+	/* Turn off led connected to PC.4 pin */
+	GPIO_ResetBits(GPIOC, GPIO_Pin_13);
     }
   }
 }
