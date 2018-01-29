@@ -26,8 +26,17 @@ SECTIONS
         *(.flashtext)            /* Startup code */
 	. = ALIGN(4);
     } >FLASH
- 
-    
+
+  .init           :
+  {
+    KEEP (*(SORT_NONE(.init)))
+  } > FLASH
+
+  .fini        :
+  {
+    KEEP (*(SORT_NONE(.fini)))
+  } > FLASH
+
     /* the program code is stored in the .text section, which goes to Flash */
     .text :
     {
@@ -45,8 +54,6 @@ SECTIONS
 	    /* This is used by the startup in order to initialize the .data secion */
    	 _sidata = _etext;
     } >FLASH
-    
- 
 
     /* This is the initialized data section
     The program executes knowing that the data is in the RAM

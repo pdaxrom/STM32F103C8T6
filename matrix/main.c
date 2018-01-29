@@ -25,6 +25,8 @@
 GPIO_InitTypeDef GPIO_InitStructure;
 ErrorStatus HSEStartUpStatus;
 
+uint8_t framebuffer[] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };
+
 /* Private function prototypes -----------------------------------------------*/
 void RCC_Configuration(void);
 void NVIC_Configuration(void);
@@ -64,7 +66,7 @@ int main(void)
 
   max7219_init(15);
 
-  uint8_t framebuffer[] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };
+  Delay(0xFFFFF);
 
   max7219_display(framebuffer);
 

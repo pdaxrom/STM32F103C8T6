@@ -21,7 +21,7 @@ typedef enum {
 static void max7219_clean(void);
 static void sendData(uint16_t data);
 
-//static uint8_t framebuffer[] = { 0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80 };
+static uint8_t framebuffer[] = { 0xFF, 0x81, 0x81, 0x81, 0x81, 0x81, 0x81, 0xFF };
 
 void max7219_init(uint8_t intensivity)
 {
@@ -58,7 +58,7 @@ void max7219_init(uint8_t intensivity)
 	Delay(800);
 	max7219_setIntensivity(intensivity);
 	max7219_clean();
-//	max7219_display(framebuffer);
+	max7219_display(framebuffer);
 }
 
 void max7219_setIntensivity(uint8_t intensivity)
